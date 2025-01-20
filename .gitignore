@@ -1,0 +1,13 @@
+*.lock
+*.log
+*.classpath
+*.project
+*.settings
+target/
+*.gz
+*.xml
+*.class
+*.conf
+*.txt
+.gradle
+build/

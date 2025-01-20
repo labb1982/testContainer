@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    //id 'org.springframework.boot' version '3.4.1'
+//	id 'io.spring.dependency-management' version '1.1.7+'
+    id 'org.cyclonedx.bom' version '1.10.0'
+    id("io.freefair.lombok") version "8.11"
+}
+
+allprojects {
+
+//    plugins {
+//        id 'java'
+//    }
+    apply plugin: 'java'
+    group = 'org.example'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation enforcedPlatform('org.springframework.boot:spring-boot-dependencies:3.4.1')
+        implementation enforcedPlatform('org.springframework.cloud:spring-cloud-dependencies:2024.0.0')
+        testImplementation enforcedPlatform('org.junit:junit-bom')
+
+//        testImplementation enforcedPlatform('io.rest-assured:rest-assured-bom:[5.4.0,)')
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+//        implementation 'org.apache.logging.log4j:log4j-core' // Use the latest version
+        implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
+        testImplementation 'org.testcontainers:postgresql' //:1.20.4'
+
+        runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        configureEach {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+    test {
+        useJUnitPlatform()
+    }
+}
+
+
+
