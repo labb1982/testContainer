@@ -1,0 +1,75 @@
+#https://mkyong.com/logging/log4j2-yml-example/
+Configuration:
+  status: warn
+
+  appenders:
+    Console:
+      name: LogToConsole
+      PatternLayout:
+        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+
+    #File:
+    #  name: File
+    #  fileName: logs/app.log
+    #  PatternLayout:
+    #    Pattern: "%d %p %C{1.} [%t] %m%n"
+
+    RollingFile:
+      - name: LogToRollingFile
+        fileName: logs/app.log
+        filePattern: "logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy_HH}-%i.log.gz"
+        PatternLayout:
+          pattern: "[%-5level] %d{yyyy-MM-dd_HH-mm-ss.SSS} [%t] %c{1} - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 10MB
+          TimeBasedTriggeringPolicy:
+            interval: 2
+        DefaultRollOverStrategy:
+          max: 10
+      - name: LogToRollingFileLQ
+        fileName: logs/lq.log
+        filePattern: "logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy_HH}-%i.log.gz"
+        PatternLayout:
+          pattern: "[%-5level] %d{yyyy-MM-dd_HH-mm-ss.SSS} [%t] %c{1} - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 10MB
+          TimeBasedTriggeringPolicy:
+            interval: 2
+        DefaultRollOverStrategy:
+          max: 10
+
+  Loggers:
+    logger:
+      - name: nosql
+        level: trace
+        additivity: false
+        AppenderRef:
+          #- ref: LogToConsole
+          - ref: LogToRollingFile
+      - name: org.apache
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFile
+      - name: liquibase
+        level: trace
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFileLQ
+      - name: org.testcontainers
+        level: trace
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFile
+      - name: com.datastax
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFile
+
+    Root:
+      level: warn
+      AppenderRef:
+        ref: LogToRollingFile

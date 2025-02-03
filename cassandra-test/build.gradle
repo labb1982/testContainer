@@ -1,0 +1,20 @@
+plugins {
+//    id 'java'
+    id 'java-library'
+}
+
+
+
+dependencies {
+
+    implementation 'org.apache.cassandra:java-driver-core'
+//    implementation 'com.datastax.oss:java-driver-core' moved to org.apache.cassandra » java-driver-core
+
+    testImplementation 'org.testcontainers:cassandra' //:1.20.4
+
+    testImplementation 'org.awaitility:awaitility' //:4.2.2
+
+    testImplementation 'org.liquibase:liquibase-core'
+    testImplementation 'org.liquibase.ext:liquibase-cassandra:4.31.0'
+    testImplementation 'com.ing.data:cassandra-jdbc-wrapper' //:4.14.+
+}

@@ -2,7 +2,7 @@ plugins {
     id 'java'
     //id 'org.springframework.boot' version '3.4.1'
 //	id 'io.spring.dependency-management' version '1.1.7+'
-    id 'org.cyclonedx.bom' version '1.10.0'
+//    id 'org.cyclonedx.bom' version '1.10.0'
     id("io.freefair.lombok") version "8.11"
 }
 
@@ -12,6 +12,7 @@ allprojects {
 //        id 'java'
 //    }
     apply plugin: 'java'
+    apply plugin: 'io.freefair.lombok'
     group = 'org.example'
     version = '1.0-SNAPSHOT'
 
@@ -19,20 +20,45 @@ allprojects {
         mavenCentral()
     }
 
+
+
+
+}
+
+
+//https://stackoverflow.com/questions/12077083/what-is-the-difference-between-allprojects-and-subprojects
+subprojects {
+
+    apply plugin: 'io.freefair.lombok'
+
+
     dependencies {
+
+//https://projectlombok.org/setup/gradle
+//		compileOnly 'org.projectlombok:lombok:1.18.36'
+//		annotationProcessor 'org.projectlombok:lombok:1.18.36'
+//
+//		testCompileOnly 'org.projectlombok:lombok:1.18.36'
+//		testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+
         implementation enforcedPlatform('org.springframework.boot:spring-boot-dependencies:3.4.1')
         implementation enforcedPlatform('org.springframework.cloud:spring-cloud-dependencies:2024.0.0')
-        testImplementation enforcedPlatform('org.junit:junit-bom')
-
-//        testImplementation enforcedPlatform('io.rest-assured:rest-assured-bom:[5.4.0,)')
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-//        implementation 'org.apache.logging.log4j:log4j-core' // Use the latest version
+        implementation enforcedPlatform('software.amazon.awssdk:bom:2.29.35')
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
-        testImplementation 'org.testcontainers:postgresql' //:1.20.4'
-
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
         runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+
+        //https://docs.gradle.org/8.11.1/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 
+    
+
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs += ["-Xlint:deprecation"]
+    }
     configurations {
         compileOnly {
             extendsFrom annotationProcessor
@@ -41,10 +67,6 @@ allprojects {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
     }
-    test {
-        useJUnitPlatform()
-    }
 }
-
 
 

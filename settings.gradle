@@ -1,3 +1,4 @@
 rootProject.name = 'test-container'
 include(':LabtestContainer')
 include(':LabSpringtestContainer')
+include(':cassandra-test')

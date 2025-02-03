@@ -1,10 +1,8 @@
 
 
-dependencies
-        {
-         
-            testImplementation 'org.junit.jupiter:junit-jupiter'
+dependencies  {
             implementation 'org.postgresql:postgresql' //:42.7.5'
-        }
+            testImplementation 'org.testcontainers:postgresql'
+}
 
 

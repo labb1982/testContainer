@@ -1,0 +1,10 @@
+databaseChangeLog:
+#  - include:
+#      file: classpath:/db/changelog/changesets/pg_cm/db.changelog-pg_cassandra.yaml
+#      context: pg_cm
+#  - include:
+#      file: classpath:/db/changelog/changesets/pg_mdm/db.changelog-pg_mdm.yaml
+#      context: pg_mdm
+  - include:
+      file: db/changelog/changesets/cassandra/db.changelog-cassandra.yaml
+      context: cassandra
